@@ -1,0 +1,39 @@
+﻿<Controls:MetroWindow x:Class="KanBan.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:local="clr-namespace:KanBan"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:Vm="clr-namespace:KanBan.ViewModels"
+        mc:Ignorable="d"
+        WindowStyle="ThreeDBorderWindow"
+        Title="MainWindow" Height="1080" Width="1920" WindowState="Maximized">
+    <Window.DataContext>
+        <Vm:MainWindowViewModel/>
+    </Window.DataContext>
+    <!-- Main Grid -->
+    <Grid>
+        <!-- Menu Expander -->
+        <Button x:Name="ExpandCollapseBtn" Width="50" Height="50" Click="ExpandCollapse_Click" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                    fa:Awesome.Content="Bars" FontSize="30" VerticalContentAlignment="Center" Panel.ZIndex="1"/>
+        <!-- Content Grid -->
+        <Grid Panel.ZIndex="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <!-- ToolBox Menu-->
+            <StackPanel x:Name="ToolBox" Grid.Column="0" Width="0" HorizontalAlignment="Left" Background="LightGray">
+                <Button Margin="0,60,0,0" Content="1" Width="{Binding ElementName=ToolBox, Path=ActualWidth}" Height="50" HorizontalAlignment="Left" HorizontalContentAlignment="Left"/>
+                <Button Content="1" Width="{Binding ElementName=ToolBox, Path=ActualWidth}" Height="50" HorizontalAlignment="Left" HorizontalContentAlignment="Left"/>
+                <Button Content="1" Width="{Binding ElementName=ToolBox, Path=ActualWidth}" Height="50" HorizontalAlignment="Left" HorizontalContentAlignment="Left"/>
+                <Button Content="1" Width="{Binding ElementName=ToolBox, Path=ActualWidth}" Height="50" HorizontalAlignment="Left" HorizontalContentAlignment="Left"/>
+                <Button Content="1" Width="{Binding ElementName=ToolBox, Path=ActualWidth}" Height="50" HorizontalAlignment="Left" HorizontalContentAlignment="Left"/>
+                <Button Content="1" Width="{Binding ElementName=ToolBox, Path=ActualWidth}" Height="50" HorizontalAlignment="Left" HorizontalContentAlignment="Left"/>
+            </StackPanel>
+            <ContentControl Background="Red" Grid.Column="1"></ContentControl>
+        </Grid>
+    </Grid>
+</Controls:MetroWindow>
