@@ -32,10 +32,11 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <!-- This style is used for ListBox, to remove the WPF default 'animated' mouse over effect -->
-    <Style TargetType="{x:Type ListBoxItem}" x:Key="MenuListBoxItemStyle">
+    <!-- This style is used for the ProjectListMenu -->
+    <Style TargetType="{x:Type ListBoxItem}" x:Key="ProjectListMenu">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Border.Background" Value="Transparent"/>
+        <Setter Property="TextBlock.Background" Value="Red"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
@@ -47,8 +48,42 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Border.Background" Value="DarkSlateGray"/>
+                <Setter Property="Border.Background" Value="Transparent"/>
+                <Setter Property="TextBlock.Background" Value="Purple"/>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type ListBox}" x:Key="ListBoxHorizontal">
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="OverridesDefaultStyle" Value="True"/>
+                    <Setter Property="Border.Background" Value="Transparent"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border x:Name="Border" Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Border.Background" Value="Transparent"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -19,9 +20,10 @@ namespace KanBan.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public ColumnModel(string name)
+        public ColumnModel(string name, ObservableCollection<TaskModel> tasksCollection)
         {
             _name = name;
+            _tasksCollection = tasksCollection;
         }
 
         private string _name;
@@ -34,6 +36,18 @@ namespace KanBan.Models
                 OnPropertyChanged(nameof(Name));
             }
         }
+
+        private ObservableCollection<TaskModel> _tasksCollection;
+        public ObservableCollection<TaskModel> TasksCollection
+        {
+            get { return _tasksCollection; }
+            set
+            {
+                _tasksCollection = value; 
+                OnPropertyChanged(nameof(TasksCollection));
+            }
+        }
+
 
     }
 }

@@ -21,24 +21,21 @@ namespace KanBan.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public ProjectModel(string name)
+        public ProjectModel(string projectName, ObservableCollection<ColumnModel> columnCollection)
         {
-            this._name = name;
-            _columnCollection.Add(new ColumnModel("dsq"));
-            _columnCollection.Add(new ColumnModel("dsq"));
-            _columnCollection.Add(new ColumnModel("dsq"));
-            _columnCollection.Add(new ColumnModel("dsq"));
+            _projectName = projectName;
+            _columnCollection = columnCollection;
         }
 
         #region XamlVariable
-        private string _name;
-        public string Name
+        private string _projectName;
+        public string ProjectName
         {
-            get { return _name; }
+            get { return _projectName; }
             set
             {
-                _name = value; 
-                OnPropertyChanged(nameof(Name));
+                _projectName = value; 
+                OnPropertyChanged(nameof(ProjectName));
             }
         }
 

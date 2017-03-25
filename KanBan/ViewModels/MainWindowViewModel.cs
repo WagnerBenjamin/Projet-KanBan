@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using KanBan.Annotations;
 using KanBan.Models;
 
@@ -23,34 +24,51 @@ namespace KanBan.ViewModels
 
         public MainWindowViewModel()
         {
-            ProjectCollection.Add(new ProjectModel("lel1"));
-            ProjectCollection.Add(new ProjectModel("lel2"));
-            ProjectCollection.Add(new ProjectModel("lel3"));
-            ProjectCollection.Add(new ProjectModel("lel4"));
-            ProjectCollection.Add(new ProjectModel("lel5"));
+            for (int l = 0; l < 4; l++)
+            {
+                ObservableCollection<ColumnModel> columntemp = new ObservableCollection<ColumnModel>();
+                for (int i = 0; i < 5; i++)
+                {  
+                    ObservableCollection<TaskModel> tasktemp = new ObservableCollection<TaskModel>();
+                    for (int j = 0; j < 5; j++)
+                    {
+                        ObservableCollection<SubTask> subtasktemp = new ObservableCollection<SubTask>();
+                        for (int k = 0; k < 3; k++)
+                        {
+                            subtasktemp.Add(new SubTask("SubTask" + l+j+i+k, "hfis"));
+                        }
+                        tasktemp.Add(new TaskModel("Task" + l+j+i, null, "yoylo " + l + j + i, subtasktemp));
+                    }
+                    columntemp.Add(new ColumnModel("Column" + l+i, tasktemp));
+                }
+                _projectCollection.Add(new ProjectModel("Project" + l, columntemp));
+            }
+            SelectedItem = ProjectCollection[0];
         }
 
-        private ObservableCollection<ProjectModel> projectCollection = new ObservableCollection<ProjectModel>();
+        private ObservableCollection<ProjectModel> _projectCollection = new ObservableCollection<ProjectModel>();
         public ObservableCollection<ProjectModel> ProjectCollection
         {
-            get { return projectCollection; }
+            get { return _projectCollection; }
             set
             {
-                projectCollection = value; 
+                _projectCollection = value; 
                 OnPropertyChanged(nameof(ProjectCollection));
             }
         }
 
-        private ColumnModel selectedItem;
-        public ColumnModel SelectedItem
+        private ProjectModel _selectedItem;
+        public ProjectModel SelectedItem
         {
-            get { return selectedItem; }
+            get { return _selectedItem; }
             set
             {
-                selectedItem = value; 
+                _selectedItem = value; 
                 OnPropertyChanged(nameof(SelectedItem));
             }
         }
+
+
 
     }
 }
