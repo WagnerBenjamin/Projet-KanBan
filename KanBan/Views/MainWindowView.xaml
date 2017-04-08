@@ -11,70 +11,26 @@
         xmlns:conv="clr-namespace:KanBan.Converter"
         mc:Ignorable="d"
         WindowStyle="ThreeDBorderWindow"
-        Title="MainWindowView" Height="1080" Width="1920" WindowState="Maximized">
+        Title="MainWindowView" Height="768" Width="1360" WindowState="Maximized">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
 
     <Window.Resources>
         <conv:ColumnWidthToListBoxMarginLeftConverter x:Key="ColumnWidthToListBoxMarginLeftConverter"/>
-        
-        <DataTemplate DataType="{x:Type models:TaskModel}" x:Key="TaskTemplate">
-            <Grid Margin="5" Background="Green">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="{Binding Name}"/>
-                <TextBlock Text="{Binding DeadLine}" Grid.Row="1"/>
-                <TextBlock Text="{Binding Description}" Grid.Row="2"/>
-            </Grid>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type models:ColumnModel}" x:Key="ColumnTemplate">
-            <Grid Background="Yellow" Margin="5">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Border Height="50">
-                    <TextBlock Text="{Binding Name}" Height="Auto" TextAlignment="Center" VerticalAlignment="Center" FontSize="20" TextWrapping="WrapWithOverflow"/>
-                </Border>
-                <ListBox ItemsSource="{Binding TasksCollection}" ItemTemplate="{StaticResource TaskTemplate}" Grid.Row="1" Width="300" Background="Transparent">
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListBoxItem}">
-                            <Setter Property="OverridesDefaultStyle" Value="True"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                        <Border>
-                                            <ContentPresenter/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                </ListBox>
-            </Grid>
-        </DataTemplate>
+
         <DataTemplate DataType="{x:Type models:ProjectModel}" x:Key="MenuProjectTemplate">
             <TextBlock Text="{Binding ProjectName}" Padding="5,20" Width="50" Background="Red" HorizontalAlignment="Left" x:Name="ProjectName"
                        MouseEnter="MenuProjectName_OnMouseEnter" MouseLeave="MenuProjectName_OnMouseLeave"/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type models:ProjectModel}" x:Key="ProjectTemplate">
-            <Grid Background="Blue">
-                <ListBox ItemsSource="{Binding ColumnCollection}" Background="Purple" Margin="10" Style="{StaticResource ListBoxHorizontal}"
-                         ItemTemplate="{StaticResource ColumnTemplate}"/>
-            </Grid>
-        </DataTemplate>
     </Window.Resources>
-    
+
     <!-- Main Grid -->
     <Grid>
-        <ListBox Name="ProjectListBox" ItemsSource="{Binding ProjectCollection}" Margin="{Binding ElementName=ToolBox, Path=ActualWidth, Converter={StaticResource ColumnWidthToListBoxMarginLeftConverter}}" Background="Transparent" SelectedItem="{Binding SelectedItem}" SelectionMode="Single"
-                     ItemContainerStyle="{StaticResource ProjectListMenu}" ItemTemplate="{StaticResource MenuProjectTemplate}" HorizontalContentAlignment="Stretch" Panel.ZIndex="1" 
-                     HorizontalAlignment="Left" SelectionChanged="HighLightProjectSelected_OnSelectionChanged"/>
+        <ListBox Name="ProjectListBox" ItemsSource="{Binding ProjectCollection}" Margin="{Binding ElementName=MainToolBox, Path=Width, 
+                Converter={StaticResource ColumnWidthToListBoxMarginLeftConverter}}" Background="Transparent" SelectedItem="{Binding SelectedItem}" SelectionMode="Single"
+                ItemContainerStyle="{StaticResource ProjectListMenu}" ItemTemplate="{StaticResource MenuProjectTemplate}" HorizontalContentAlignment="Stretch" Panel.ZIndex="1" 
+                HorizontalAlignment="Left" SelectionChanged="HighLightProjectSelected_OnSelectionChanged"/>
         <!-- Content Grid -->
         <Grid Panel.ZIndex="0">
             <Grid.ColumnDefinitions>
@@ -83,15 +39,63 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <!-- ToolBox Menu-->
-            <StackPanel x:Name="ToolBox" Grid.Column="0" Width="0" HorizontalAlignment="Left" Background="LightGray">
-                <WrapPanel Height="{Binding ElementName='ToolBox', Path=ActualHeight}" Width="300" HorizontalAlignment="Right" Orientation="Horizontal">
-                    <TextBlock Width="250" Height="50" Margin="20,0" Text="MENU" TextAlignment="Left" FontSize="40"/>
-                    <Button fa:Awesome.Content="Key" FontSize="40" Width="50" Height="50" Style="{StaticResource MenuButtonStyle}"/>
-                    <Button Content="1" Width="50" Height="50" Style="{StaticResource MenuButtonStyle}"/>
-                    <Button Content="1" Width="50" Height="50" Style="{StaticResource MenuButtonStyle}"/>
-                    <Button Content="1" Width="50" Height="50" Style="{StaticResource MenuButtonStyle}"/>
-                </WrapPanel>
-            </StackPanel>
+            <ScrollViewer x:Name="MainToolBox" Grid.Column="0" Width="0" HorizontalAlignment="Right" Background="LightGray" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
+                <StackPanel Orientation="Horizontal">
+                    <!-- Menu Principal -->
+                    <StackPanel Height="{Binding ElementName='MainToolBox', Path=ActualHeight}" Width="300" HorizontalAlignment="Right" >
+                        <TextBlock Text="Menu Principal" FontWeight="Bold" FontSize="30" TextAlignment="Center" Width="300"/>
+                        <Button Width="Auto" Margin="20,0" Content="Nouveau Projet..." FontSize="15" Click="NewProjectButton_OnClick"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="PROJET" FontSize="20" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+                            <TextBox Text="{Binding SelectedItem.ProjectName}" Grid.Row="1" Width="200"/>
+                            <Label Grid.Row="2" VerticalAlignment="Top" Content="Colonnes" HorizontalAlignment="Center"></Label>
+                            <ListBox ItemsSource="{Binding SelectedItem.ColumnCollection}" Grid.Row="2" Width="200" Margin="0,25,0,0" HorizontalContentAlignment="Center">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type models:ColumnModel}">
+                                        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" AcceptsReturn="False" IsReadOnly="True" Cursor="Arrow" 
+                                             MouseDoubleClick="ModifyTextBoxTrue_OnMouseDoubleClick" LostFocus="ModifyTextBoxFalse_OnLostFocus"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ListBoxItem}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                    <Border>
+                                                        <ContentPresenter/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                <ListBox.Style>
+                                    <Style TargetType="{x:Type ListBox}">
+                                        <Setter Property="ItemsPanel">
+                                            <Setter.Value>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                                </ItemsPanelTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.Style>
+                            </ListBox>
+                            <Button Grid.Row="3" Content="Nouvelle Colonne..." Click="NewColumn_OnClick"/>
+                        </Grid>
+                    </StackPanel>
+                    <!-- Menu Projet -->
+                    <StackPanel Width="300" HorizontalAlignment="Right" Height="{Binding ElementName='MainToolBox', Path=ActualHeight}">
+                        <TextBlock Text="yolo"/>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
             <!-- Menu Expander -->
             <StackPanel Grid.Column="1" Background="DimGray" Panel.ZIndex="0" Width="50" HorizontalAlignment="Left">
                 <Button x:Name="ExpandCollapseBtn" Width="50" Height="50" Click="ExpandCollapse_Click" HorizontalAlignment="Left" VerticalAlignment="Top" 

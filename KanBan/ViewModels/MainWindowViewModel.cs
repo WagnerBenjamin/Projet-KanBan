@@ -7,8 +7,10 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
 using KanBan.Annotations;
 using KanBan.Models;
+using KanBan.Utils;
 
 namespace KanBan.ViewModels
 {
@@ -68,6 +70,16 @@ namespace KanBan.ViewModels
             }
         }
 
+        //private ICommand _newColumnCommand;
+        //public ICommand NewColumnCommand
+        //{
+        //    get
+        //    {
+        //        this._newColumnCommand = new RelayCommand((SelectedItem as ProjectModel).AddColumn);
+        //        return _newColumnCommand;
+        //    }
+        //    set { _newColumnCommand = value; }
+        //}
 
 
     }

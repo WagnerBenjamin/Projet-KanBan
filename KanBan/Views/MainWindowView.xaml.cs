@@ -41,12 +41,12 @@ namespace KanBan
         {
             if (Expanded)
             {
-                AnimUiElement(0, ContentControl.WidthProperty, ToolBox, null);
-                //AnimUiElement(0, ContentControl.left, ToolBox, null);
+                AnimUiElement(0, ContentControl.WidthProperty, MainToolBox, null);
+                //AnimUiElement(0, ContentControl.left, MainToolBox, null);
             }
             else
             {
-                AnimUiElement(300, ContentControl.WidthProperty, ToolBox, null);
+                AnimUiElement(300, ContentControl.WidthProperty, MainToolBox, null);
             }
             Expanded = !Expanded;
         }
@@ -88,5 +88,62 @@ namespace KanBan
                 _lastSelectedListBoxItem.Foreground = Brushes.White;
             }
         }
+
+        private void ModifyTextBoxTrue_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox != null) textBox.IsReadOnly = false;
+        }
+
+        private void ModifyTextBoxFalse_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox != null) textBox.IsReadOnly = true;
+        }
+
+        private void NewColumn_OnClick(object sender, RoutedEventArgs e)
+        {
+            AnimUiElement(300, ScrollViewerOffsetMediator.HorizontalOffsetProperty, MainToolBox, null);
+        }
+
+        private void NewProjectButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            AnimUiElement(300, ScrollViewerOffsetMediator.HorizontalOffsetProperty, MainToolBox, null);
+
+            //DoubleAnimation verticalAnimation = new DoubleAnimation();
+
+            //verticalAnimation.From = MainToolBox.VerticalOffset;
+            //verticalAnimation.To = 300;
+            //verticalAnimation.Duration = new Duration(new TimeSpan(0, 0, 0, 3));
+
+            //Storyboard storyboard = new Storyboard();
+
+            //storyboard.Children.Add(verticalAnimation);
+            //Storyboard.SetTarget(verticalAnimation, MainToolBox);
+            //Storyboard.SetTargetProperty(verticalAnimation, new PropertyPath(ScrollAnimationBehavior.VerticalOffsetProperty)); // Attached dependency property
+            //storyboard.Begin();
+        }
     }
+
+    //public class ScrollViewierOffsetAnimator : MainToolBox
+    //{
+    //    public static readonly DependencyProperty ScrollOffsetProperty =
+    //    DependencyProperty.Register("ScrollOffset", typeof(double), typeof(ScrollViewierOffsetAnimator),
+    //         new FrameworkPropertyMetadata(0.0, new PropertyChangedCallback(OnScrollOffsetChanged)));
+
+
+    //    public double ScrollOffset
+    //    {
+    //        get { return (double)GetValue(ScrollOffsetProperty); }
+    //        set { SetValue(ScrollOffsetProperty, value); }
+    //    }
+
+    //    private static void OnScrollOffsetChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+    //    {
+    //        ScrollViewierOffsetAnimator myObj = obj as ScrollViewierOffsetAnimator;
+
+    //        if (myObj != null)
+    //            myObj.ScrollToHorizontalOffset(myObj.ScrollOffset);
+    //    }
+    //}
 }
