@@ -103,47 +103,22 @@ namespace KanBan
 
         private void NewColumn_OnClick(object sender, RoutedEventArgs e)
         {
-            AnimUiElement(300, ScrollViewerOffsetMediator.HorizontalOffsetProperty, MainToolBox, null);
+
         }
 
         private void NewProjectButton_OnClick(object sender, RoutedEventArgs e)
         {
-            AnimUiElement(300, ScrollViewerOffsetMediator.HorizontalOffsetProperty, MainToolBox, null);
+            MainToolBox.ScrollToHorizontalOffset(300);
+        }
 
-            //DoubleAnimation verticalAnimation = new DoubleAnimation();
+        private void ReturnToMainMenu(object sender, RoutedEventArgs e)
+        {
+            MainToolBox.ScrollToHorizontalOffset(0);
+        }
 
-            //verticalAnimation.From = MainToolBox.VerticalOffset;
-            //verticalAnimation.To = 300;
-            //verticalAnimation.Duration = new Duration(new TimeSpan(0, 0, 0, 3));
-
-            //Storyboard storyboard = new Storyboard();
-
-            //storyboard.Children.Add(verticalAnimation);
-            //Storyboard.SetTarget(verticalAnimation, MainToolBox);
-            //Storyboard.SetTargetProperty(verticalAnimation, new PropertyPath(ScrollAnimationBehavior.VerticalOffsetProperty)); // Attached dependency property
-            //storyboard.Begin();
+        private void CreateProject(object sender, RoutedEventArgs e)
+        {
+            MainToolBox.ScrollToHorizontalOffset(0);
         }
     }
-
-    //public class ScrollViewierOffsetAnimator : MainToolBox
-    //{
-    //    public static readonly DependencyProperty ScrollOffsetProperty =
-    //    DependencyProperty.Register("ScrollOffset", typeof(double), typeof(ScrollViewierOffsetAnimator),
-    //         new FrameworkPropertyMetadata(0.0, new PropertyChangedCallback(OnScrollOffsetChanged)));
-
-
-    //    public double ScrollOffset
-    //    {
-    //        get { return (double)GetValue(ScrollOffsetProperty); }
-    //        set { SetValue(ScrollOffsetProperty, value); }
-    //    }
-
-    //    private static void OnScrollOffsetChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
-    //    {
-    //        ScrollViewierOffsetAnimator myObj = obj as ScrollViewierOffsetAnimator;
-
-    //        if (myObj != null)
-    //            myObj.ScrollToHorizontalOffset(myObj.ScrollOffset);
-    //    }
-    //}
 }

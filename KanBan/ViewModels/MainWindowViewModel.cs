@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using KanBan.Annotations;
@@ -48,6 +49,8 @@ namespace KanBan.ViewModels
             SelectedItem = ProjectCollection[0];
         }
 
+        #region XAML PROPERTY
+
         private ObservableCollection<ProjectModel> _projectCollection = new ObservableCollection<ProjectModel>();
         public ObservableCollection<ProjectModel> ProjectCollection
         {
@@ -70,17 +73,49 @@ namespace KanBan.ViewModels
             }
         }
 
-        //private ICommand _newColumnCommand;
-        //public ICommand NewColumnCommand
-        //{
-        //    get
-        //    {
-        //        this._newColumnCommand = new RelayCommand((SelectedItem as ProjectModel).AddColumn);
-        //        return _newColumnCommand;
-        //    }
-        //    set { _newColumnCommand = value; }
-        //}
+        private ICommand _newProjectCommand;
+        public ICommand NewProjectCommand
+        {
+            get
+            {
+                _newProjectCommand = new RelayCommand(delegate { NewProjectModel = new ProjectModel();});
+                return _newProjectCommand;
+            }
+            set { _newProjectCommand = value; }
+        }
 
+        #region New Project Variable
 
+        private ProjectModel _newProjectModel;
+        public ProjectModel NewProjectModel
+        {
+            get { return _newProjectModel; }
+            set
+            {
+                _newProjectModel = value; 
+                OnPropertyChanged(nameof(NewProjectModel));
+            }
+        }
+
+        private ICommand _createProjectCommand;
+        public ICommand CreateProjectCommand
+        {
+            get
+            {
+                _createProjectCommand = new RelayCommand(CreateProject);
+                return _createProjectCommand; 
+                
+            }
+            set { _createProjectCommand = value; }
+        }
+
+        #endregion
+
+        #endregion
+
+        private void CreateProject()
+        {
+            ProjectCollection.Add(NewProjectModel);
+        }
     }
 }

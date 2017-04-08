@@ -134,4 +134,11 @@
                          ScrollViewer.CanContentScroll="False"/>
         </Grid>
     </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type models:ProjectModel}" x:Key="NewProjectTemplate">
+        <StackPanel>
+            <Label Content="Nom"/>
+            <TextBox Text="{Binding ProjectName}"/>
+        </StackPanel>
+    </DataTemplate>
 </ResourceDictionary>

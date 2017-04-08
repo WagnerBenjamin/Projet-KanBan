@@ -22,6 +22,11 @@ namespace KanBan.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public ProjectModel()
+        {
+            
+        }
+
         public ProjectModel(string projectName, ObservableCollection<ColumnModel> columnCollection)
         {
             _projectName = projectName;
@@ -40,7 +45,7 @@ namespace KanBan.Models
             }
         }
 
-        private ObservableCollection<ColumnModel> _columnCollection = new ObservableCollection<ColumnModel>();
+        private ObservableCollection<ColumnModel> _columnCollection;
         public ObservableCollection<ColumnModel> ColumnCollection
         {
             get { return _columnCollection; }

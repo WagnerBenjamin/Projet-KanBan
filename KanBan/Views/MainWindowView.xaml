@@ -39,12 +39,14 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <!-- ToolBox Menu-->
-            <ScrollViewer x:Name="MainToolBox" Grid.Column="0" Width="0" HorizontalAlignment="Right" Background="LightGray" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
+            <ScrollViewer x:Name="MainToolBox" Grid.Column="0" Width="0" HorizontalAlignment="Right" Background="LightGray" 
+                          HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
                 <StackPanel Orientation="Horizontal">
                     <!-- Menu Principal -->
-                    <StackPanel Height="{Binding ElementName='MainToolBox', Path=ActualHeight}" Width="300" HorizontalAlignment="Right" >
+                    <StackPanel Width="300" HorizontalAlignment="Right">
                         <TextBlock Text="Menu Principal" FontWeight="Bold" FontSize="30" TextAlignment="Center" Width="300"/>
-                        <Button Width="Auto" Margin="20,0" Content="Nouveau Projet..." FontSize="15" Click="NewProjectButton_OnClick"/>
+                        <Button Width="Auto" Margin="20,0" Content="Nouveau Projet..." FontSize="15" Click="NewProjectButton_OnClick" Command="{Binding NewProjectCommand}"/>
+                        <!-- Edit Project -->
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
@@ -54,14 +56,17 @@
                             </Grid.RowDefinitions>
                             <TextBlock Text="PROJET" FontSize="20" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
                             <TextBox Text="{Binding SelectedItem.ProjectName}" Grid.Row="1" Width="200"/>
-                            <Label Grid.Row="2" VerticalAlignment="Top" Content="Colonnes" HorizontalAlignment="Center"></Label>
+                            <!-- Affichage Column -->
+                            <Label Grid.Row="2" VerticalAlignment="Top" Content="Colonnes" HorizontalAlignment="Center"/>
                             <ListBox ItemsSource="{Binding SelectedItem.ColumnCollection}" Grid.Row="2" Width="200" Margin="0,25,0,0" HorizontalContentAlignment="Center">
+                                <!-- ItemTemplate -->
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type models:ColumnModel}">
                                         <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" AcceptsReturn="False" IsReadOnly="True" Cursor="Arrow" 
                                              MouseDoubleClick="ModifyTextBoxTrue_OnMouseDoubleClick" LostFocus="ModifyTextBoxFalse_OnLostFocus"/>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
+                                <!-- ItemStyle -->
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="{x:Type ListBoxItem}">
                                         <Setter Property="Template">
@@ -75,6 +80,7 @@
                                         </Setter>
                                     </Style>
                                 </ListBox.ItemContainerStyle>
+                                <!-- ListBox Style -->
                                 <ListBox.Style>
                                     <Style TargetType="{x:Type ListBox}">
                                         <Setter Property="ItemsPanel">
@@ -92,7 +98,11 @@
                     </StackPanel>
                     <!-- Menu Projet -->
                     <StackPanel Width="300" HorizontalAlignment="Right" Height="{Binding ElementName='MainToolBox', Path=ActualHeight}">
-                        <TextBlock Text="yolo"/>
+                        <Grid>
+                            <Button Content="Retour" Click="ReturnToMainMenu" Width="Auto" HorizontalAlignment="Left" Padding="5, 10"/>
+                            <Button Content="Valider" Click="CreateProject" Width="Auto" HorizontalAlignment="Right" Padding="5, 10" Command="{Binding CreateProjectCommand}"/>
+                        </Grid>
+                        <ContentControl ContentTemplate="{StaticResource NewProjectTemplate}" Content="{Binding NewProjectModel}"/>
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>
