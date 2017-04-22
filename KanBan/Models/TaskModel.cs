@@ -72,6 +72,28 @@ namespace KanBan.Models
             }
         }
 
+        private int _taskWeight;
+        public int TaskWeight
+        {
+            get { return _taskWeight; }
+            set
+            {
+                _taskWeight = value; 
+                OnPropertyChanged(nameof(TaskWeight));
+            }
+        }
+
+        private char _taskPriority;
+        public char TaskPriority
+        {
+            get { return _taskPriority; }
+            set
+            {
+                _taskPriority = value; 
+                OnPropertyChanged(nameof(TaskPriority));
+            }
+        }
+
     }
 
     public class SubTask:INotifyPropertyChanged
