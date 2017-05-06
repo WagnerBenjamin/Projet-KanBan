@@ -20,6 +20,11 @@ namespace KanBan.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public ColumnModel()
+        {
+            
+        }
+
         public ColumnModel(string name, ObservableCollection<TaskModel> tasksCollection)
         {
             _name = name;
@@ -37,7 +42,7 @@ namespace KanBan.Models
             }
         }
 
-        private ObservableCollection<TaskModel> _tasksCollection;
+        private ObservableCollection<TaskModel> _tasksCollection = new ObservableCollection<TaskModel>();
         public ObservableCollection<TaskModel> TasksCollection
         {
             get { return _tasksCollection; }
@@ -48,6 +53,21 @@ namespace KanBan.Models
             }
         }
 
+        private TaskModel _selectedTaskModel;
+        public TaskModel SelectedTaskModel
+        {
+            get { return _selectedTaskModel; }
+            set
+            {
+                _selectedTaskModel = value; 
+                OnPropertyChanged(nameof(SelectedTaskModel));
+            }
+        }
 
+
+        public void AddTask()
+        {
+            TasksCollection.Add(new TaskModel("Nouvelle Tache", null, "", new ObservableCollection<SubTaskModel>()));
+        }
     }
 }

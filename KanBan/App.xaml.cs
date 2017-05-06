@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using KanBan.Utils;
+using KanBan.ViewModels;
 
 namespace KanBan
 {
@@ -13,5 +15,8 @@ namespace KanBan
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+        }
     }
 }

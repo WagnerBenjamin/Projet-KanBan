@@ -20,7 +20,12 @@ namespace KanBan.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public TaskModel(string name, DateTime? deadLine, string description, ObservableCollection<SubTask> subTasksList)
+        public TaskModel()
+        {
+            
+        }
+
+        public TaskModel(string name, DateTime? deadLine, string description, ObservableCollection<SubTaskModel> subTasksList)
         {
             _name = name;
             _deadLine = deadLine;
@@ -61,8 +66,8 @@ namespace KanBan.Models
             }
         }
 
-        private ObservableCollection<SubTask> _subTasksCollection;
-        public ObservableCollection<SubTask> SubTasksCollection
+        private ObservableCollection<SubTaskModel> _subTasksCollection;
+        public ObservableCollection<SubTaskModel> SubTasksCollection
         {
             get { return _subTasksCollection; }
             set
@@ -74,7 +79,7 @@ namespace KanBan.Models
 
     }
 
-    public class SubTask:INotifyPropertyChanged
+    public class SubTaskModel:INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -84,10 +89,9 @@ namespace KanBan.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public SubTask(string name, string description)
+        public SubTaskModel(string name, string description)
         {
             _name = name;
-            _description = description;
         }
 
         private string _name;
@@ -101,14 +105,14 @@ namespace KanBan.Models
             }
         }
 
-        private string _description;
-        public string Description
+        private bool _isDone;
+        public bool IsDone
         {
-            get { return _description; }
+            get { return _isDone; }
             set
             {
-                _description = value; 
-                OnPropertyChanged(nameof(Description));
+                _isDone = value; 
+                OnPropertyChanged(nameof(IsDone));
             }
         }
 

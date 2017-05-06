@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KanBan.ViewModels;
 
 namespace KanBan.Utils
 {
-    class Utils
+    public static class Util
     {
+        public static MainWindowViewModel MainWindowViewModel;
     }
 }

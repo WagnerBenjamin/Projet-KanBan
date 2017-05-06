@@ -70,6 +70,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converter\ColumnWidthToListBoxMarginLeftConverter.cs" />
+    <Compile Include="Converter\NullToVisibility.cs" />
     <Compile Include="Models\ColumnModel.cs" />
     <Compile Include="Models\TaskModel.cs" />
     <Page Include="Utils\Dictionary.xaml">
@@ -87,7 +88,7 @@
     <Compile Include="Models\ProjectModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
-    <Compile Include="Utils\Utils.cs" />
+    <Compile Include="Utils\Util.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindowView.xaml.cs">
       <DependentUpon>MainWindowView.xaml</DependentUpon>

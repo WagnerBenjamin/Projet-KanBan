@@ -18,6 +18,7 @@
 
     <Window.Resources>
         <conv:ColumnWidthToListBoxMarginLeftConverter x:Key="ColumnWidthToListBoxMarginLeftConverter"/>
+        <conv:NullToVisibility x:Key="NullToVisibilityConverter"/>
 
         <DataTemplate DataType="{x:Type models:ProjectModel}" x:Key="MenuProjectTemplate">
             <TextBlock Text="{Binding ProjectName}" Padding="5,20" Width="50" Background="Red" HorizontalAlignment="Left" x:Name="ProjectName"
@@ -28,7 +29,7 @@
     <!-- Main Grid -->
     <Grid>
         <ListBox Name="ProjectListBox" ItemsSource="{Binding ProjectCollection}" Margin="{Binding ElementName=MainToolBox, Path=Width, 
-                Converter={StaticResource ColumnWidthToListBoxMarginLeftConverter}}" Background="Transparent" SelectedItem="{Binding SelectedItem}" SelectionMode="Single"
+                Converter={StaticResource ColumnWidthToListBoxMarginLeftConverter}}" Background="Transparent" SelectedItem="{Binding SelectedProjectModel}" SelectionMode="Single"
                 ItemContainerStyle="{StaticResource ProjectListMenu}" ItemTemplate="{StaticResource MenuProjectTemplate}" HorizontalContentAlignment="Stretch" Panel.ZIndex="1" 
                 HorizontalAlignment="Left" SelectionChanged="HighLightProjectSelected_OnSelectionChanged"/>
         <!-- Content Grid -->
@@ -42,28 +43,24 @@
             <ScrollViewer x:Name="MainToolBox" Grid.Column="0" Width="0" HorizontalAlignment="Right" Background="LightGray" 
                           HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
                 <StackPanel Orientation="Horizontal">
-                    <!-- Menu Principal -->
+                    <!-- MENU -->
                     <StackPanel Width="300" HorizontalAlignment="Right">
                         <TextBlock Text="Menu Principal" FontWeight="Bold" FontSize="30" TextAlignment="Center" Width="300"/>
                         <Button Width="Auto" Margin="20,0" Content="Nouveau Projet..." FontSize="15" Click="NewProjectButton_OnClick" Command="{Binding NewProjectCommand}"/>
                         <!-- Edit Project -->
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="PROJET" FontSize="20" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
-                            <TextBox Text="{Binding SelectedItem.ProjectName}" Grid.Row="1" Width="200"/>
-                            <!-- Affichage Column -->
-                            <Label Grid.Row="2" VerticalAlignment="Top" Content="Colonnes" HorizontalAlignment="Center"/>
-                            <ListBox ItemsSource="{Binding SelectedItem.ColumnCollection}" Grid.Row="2" Width="200" Margin="0,25,0,0" HorizontalContentAlignment="Center">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="PROJET" FontSize="20" HorizontalAlignment="Center"/>
+                            <TextBox Text="{Binding SelectedProjectModel.ProjectName}" Width="200"/>
+                        </StackPanel>
+                        <!-- Column Display -->
+                        <StackPanel Orientation="Vertical">
+                            <Label VerticalAlignment="Top" Content="Colonnes" HorizontalAlignment="Center"/>
+                            <ListBox ItemsSource="{Binding SelectedProjectModel.ColumnCollection}" Width="200" HorizontalContentAlignment="Center" x:Name="EditColumnList">
                                 <!-- ItemTemplate -->
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type models:ColumnModel}">
                                         <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" AcceptsReturn="False" IsReadOnly="True" Cursor="Arrow" 
-                                             MouseDoubleClick="ModifyTextBoxTrue_OnMouseDoubleClick" LostFocus="ModifyTextBoxFalse_OnLostFocus"/>
+                                             MouseDoubleClick="ModifyTextBoxTrue_OnMouseDoubleClick" LostFocus="ModifyTextBoxFalse_OnLostFocus" x:Name="EditColumnName"/>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                                 <!-- ItemStyle -->
@@ -93,10 +90,51 @@
                                     </Style>
                                 </ListBox.Style>
                             </ListBox>
-                            <Button Grid.Row="3" Content="Nouvelle Colonne..." Click="NewColumn_OnClick"/>
-                        </Grid>
+                            <Button Content="Nouvelle Colonne..." Click="NewColumn_OnClick" Width="200"/>
+                        </StackPanel>
+                        <!-- Task Display -->
+                        <StackPanel Visibility="{Binding SelectedProjectModel.SelectedColumnModel, Converter={StaticResource NullToVisibilityConverter}}">
+                            <Label VerticalAlignment="Top" Content="Taches" HorizontalAlignment="Center"/>
+                                <ListBox ItemsSource="{Binding SelectedProjectModel.SelectedColumnModel.TasksCollection}" HorizontalContentAlignment="Center" 
+                                         x:Name="EditTasksList" Width="200">
+                                    <!-- ItemTemplate -->
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type models:TaskModel}">
+                                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" AcceptsReturn="False" IsReadOnly="True" Cursor="Arrow" 
+                                             MouseDoubleClick="ModifyTextBoxTrue_OnMouseDoubleClick" LostFocus="ModifyTextBoxFalse_OnLostFocus" x:Name="EditTaskName"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <!-- ItemStyle -->
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListBoxItem}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                        <Border>
+                                                            <ContentPresenter/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                    <!-- ListBox Style -->
+                                    <ListBox.Style>
+                                        <Style TargetType="{x:Type ListBox}">
+                                            <Setter Property="ItemsPanel">
+                                                <Setter.Value>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                                    </ItemsPanelTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListBox.Style>
+                                </ListBox>
+                            <Button Content="Nouvelle Tache..." Click="NewTask_OnClick" Width="200"/>
+                        </StackPanel>
                     </StackPanel>
-                    <!-- Menu Projet -->
+                    <!-- Project Menu -->
                     <StackPanel Width="300" HorizontalAlignment="Right" Height="{Binding ElementName='MainToolBox', Path=ActualHeight}">
                         <Grid>
                             <Button Content="Retour" Click="ReturnToMainMenu" Width="Auto" HorizontalAlignment="Left" Padding="5, 10"/>
@@ -106,13 +144,13 @@
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>
-            <!-- Menu Expander -->
+            <!-- Expander Menu -->
             <StackPanel Grid.Column="1" Background="DimGray" Panel.ZIndex="0" Width="50" HorizontalAlignment="Left">
                 <Button x:Name="ExpandCollapseBtn" Width="50" Height="50" Click="ExpandCollapse_Click" HorizontalAlignment="Left" VerticalAlignment="Top" 
                     fa:Awesome.Content="Gear" FontSize="30" VerticalContentAlignment="Center" Panel.ZIndex="1" Style="{StaticResource ReverseMenuButtonStyle}"/>
             </StackPanel>
-            <!-- Contenu Principal -->
-            <ContentControl Content="{Binding SelectedItem}" ContentTemplate="{StaticResource ProjectTemplate}" Grid.Column="2" Panel.ZIndex="0"/>
+            <!-- ProjectContentControl -->
+            <ContentControl Content="{Binding SelectedProjectModel}" ContentTemplate="{StaticResource ProjectTemplate}" Grid.Column="2" Panel.ZIndex="0" x:Name="ProjectContentControl"/>
         </Grid>
     </Grid>
 </controls:MetroWindow>

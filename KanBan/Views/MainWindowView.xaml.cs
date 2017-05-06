@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,6 +15,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using KanBan.Utils;
+using KanBan.ViewModels;
 
 namespace KanBan
 {
@@ -35,6 +39,8 @@ namespace KanBan
         public MainWindowView()
         {
             InitializeComponent();
+            this.Loaded += delegate { Util.MainWindowViewModel = this.DataContext as MainWindowViewModel; };
+            var tt = ProjectContentControl.FindChild<ListBox>("ProjectColumnListbox");
         }
 
         void ExpandCollapse_Click(object sender, RoutedEventArgs e)
@@ -103,7 +109,28 @@ namespace KanBan
 
         private void NewColumn_OnClick(object sender, RoutedEventArgs e)
         {
+            Util.MainWindowViewModel.AddColumn();
+            Dispatcher.Invoke(new Action(() =>
+            {
+                ListBoxItem tvi = EditColumnList.ItemContainerGenerator.ContainerFromItem(EditColumnList.Items[EditColumnList.Items.Count - 1]) as ListBoxItem;
+                TextBox tb = tvi.FindChild<TextBox>("EditColumnName");
+                tb.IsReadOnly = false;
+                tb.Focus();
+                tb.SelectAll();
+            }), DispatcherPriority.ContextIdle, null);
+        }
 
+        private void NewTask_OnClick(object sender, RoutedEventArgs e)
+        {
+            Util.MainWindowViewModel.AddTask();
+            Dispatcher.Invoke(new Action(() =>
+            {
+                ListBoxItem tvi = EditTasksList.ItemContainerGenerator.ContainerFromItem(EditTasksList.Items[EditTasksList.Items.Count - 1]) as ListBoxItem;
+                TextBox tb = tvi.FindChild<TextBox>("EditTaskName");
+                tb.IsReadOnly = false;
+                tb.Focus();
+                tb.SelectAll();
+            }), DispatcherPriority.ContextIdle, null);
         }
 
         private void NewProjectButton_OnClick(object sender, RoutedEventArgs e)

@@ -45,7 +45,7 @@ namespace KanBan.Models
             }
         }
 
-        private ObservableCollection<ColumnModel> _columnCollection;
+        private ObservableCollection<ColumnModel> _columnCollection = new ObservableCollection<ColumnModel>();
         public ObservableCollection<ColumnModel> ColumnCollection
         {
             get { return _columnCollection; }
@@ -55,11 +55,23 @@ namespace KanBan.Models
                 OnPropertyChanged(nameof(ColumnCollection));
             }
         }
+
+        private ColumnModel _selectedColumnModel;
+        public ColumnModel SelectedColumnModel
+        {
+            get { return _selectedColumnModel; }
+            set
+            {
+                _selectedColumnModel = value; 
+                OnPropertyChanged(nameof(SelectedColumnModel));
+            }
+        }
+
         #endregion
 
         public void AddColumn()
         {
-        
+            ColumnCollection.Add(new ColumnModel("Nouvelle colonne", new ObservableCollection<TaskModel>()));
         }
     }
 }

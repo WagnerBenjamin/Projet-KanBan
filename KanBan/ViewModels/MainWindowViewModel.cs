@@ -35,10 +35,10 @@ namespace KanBan.ViewModels
                     ObservableCollection<TaskModel> tasktemp = new ObservableCollection<TaskModel>();
                     for (int j = 0; j < 5; j++)
                     {
-                        ObservableCollection<SubTask> subtasktemp = new ObservableCollection<SubTask>();
+                        ObservableCollection<SubTaskModel> subtasktemp = new ObservableCollection<SubTaskModel>();
                         for (int k = 0; k < 3; k++)
                         {
-                            subtasktemp.Add(new SubTask("SubTask" + l+j+i+k, "hfis"));
+                            subtasktemp.Add(new SubTaskModel("SubTaskModel" + l+j+i+k, "hfis"));
                         }
                         tasktemp.Add(new TaskModel("Task" + l+j+i, null, "yoylo " + l + j + i, subtasktemp));
                     }
@@ -46,7 +46,7 @@ namespace KanBan.ViewModels
                 }
                 _projectCollection.Add(new ProjectModel("Project" + l, columntemp));
             }
-            SelectedItem = ProjectCollection[0];
+            SelectedProjectModel = ProjectCollection[0];
         }
 
         #region XAML PROPERTY
@@ -62,14 +62,14 @@ namespace KanBan.ViewModels
             }
         }
 
-        private ProjectModel _selectedItem;
-        public ProjectModel SelectedItem
+        private ProjectModel _selectedProjectModel;
+        public ProjectModel SelectedProjectModel
         {
-            get { return _selectedItem; }
+            get { return _selectedProjectModel; }
             set
             {
-                _selectedItem = value; 
-                OnPropertyChanged(nameof(SelectedItem));
+                _selectedProjectModel = value; 
+                OnPropertyChanged(nameof(SelectedProjectModel));
             }
         }
 
@@ -109,6 +109,18 @@ namespace KanBan.ViewModels
             set { _createProjectCommand = value; }
         }
 
+        //private ICommand _addColumnCommand;
+        //public ICommand AddColumnCommand
+        //{
+        //    get
+        //    {
+        //        _addColumnCommand = new RelayCommand(AddColumn);
+        //        return _addColumnCommand;
+        //    }
+        //    set { _addColumnCommand = value; }
+        //}
+
+
         #endregion
 
         #endregion
@@ -116,6 +128,16 @@ namespace KanBan.ViewModels
         private void CreateProject()
         {
             ProjectCollection.Add(NewProjectModel);
+        }
+
+        public void AddColumn()
+        {
+            SelectedProjectModel.AddColumn();
+        }
+
+        public void AddTask()
+        {
+            SelectedProjectModel.SelectedColumnModel.AddTask();
         }
     }
 }
